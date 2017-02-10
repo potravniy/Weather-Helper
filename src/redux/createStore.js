@@ -1,10 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import thunkMiddleware from 'redux-thunk'
 import { apiMiddleware } from 'redux-api-middleware'
 
 import rootReducer from '_reducers/index'
 
-const middlewaresChain = applyMiddleware(thunkMiddleware, apiMiddleware)
+const middlewaresChain = applyMiddleware(apiMiddleware)
 const devtoolsInterceptor = window.devToolsExtension ? window.devToolsExtension() : f => f
 
 const finalCreateStore = compose(middlewaresChain, devtoolsInterceptor)(createStore)
