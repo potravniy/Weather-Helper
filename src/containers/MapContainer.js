@@ -57,7 +57,7 @@ class MapComponent extends Component {
       const onOrientationChange = () => {
         setTimeout(() => {
           this.setMapBounds()
-        }, 100)
+        }, 200)
       }
       window.addEventListener('orientationchange', onOrientationChange)
       this.removeOrientationListener = () => {

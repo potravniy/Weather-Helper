@@ -12,7 +12,6 @@ export const getCoords = () => {
       endpoint: "coords",
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: { "considerIp": "true" },
       types: [GET_COORDS_REQUEST, GET_COORDS_SUCCESS, GET_COORDS_FAILURE]
     }
   }
