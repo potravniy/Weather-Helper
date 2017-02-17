@@ -15,9 +15,9 @@ function changeState(store) {
   storeToSave.places = state.places.map(place => {
     return {
       placeName: place.placeName,
-      placeID: place.placeID,
-      lat: place.placeID === 0 ? undefined : place.lat,
-      lng: place.placeID === 0 ? undefined : place.lng,
+      id: place.id,
+      lat: place.id === 0 ? undefined : place.lat,
+      lng: place.id === 0 ? undefined : place.lng,
     }
   })
   const newString = JSON.stringify(storeToSave)

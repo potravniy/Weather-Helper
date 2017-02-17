@@ -1,31 +1,16 @@
 import { CHANGE_LANG } from '_constants/actions'
-
-import {
-  EN,
-  UK,
-  RU
-} from '_constants/languages'
-
-import initialState from '_redux/initState'
+import languages from '_constants/languages'
+import initialState from '_redux/initialState'
 
 export default function (lang = initialState.lang, action) {
-
-  let newLang
-  switch (lang) {
-    case EN:
-      newLang = UK
-      break;
-    case UK:
-      newLang = RU
-      break;
-    case RU:
-      newLang = EN
-      break;
-  }
-  
+  let index
   switch (action.type) {
+
     case CHANGE_LANG:
-      return newLang
+      index = languages.indexOf(lang)
+      index = ++index % languages.length
+      return languages[index]
+    
     default:
       return lang
   }

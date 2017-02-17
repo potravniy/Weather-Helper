@@ -11,9 +11,9 @@ export const addPlace = (place) => {
     lng: place.lng
   }
 }
-export const removePlace = (placeID) => {
+export const removePlace = (id) => {
   return {
     type: REMOVE_PLACE,
-    placeID: placeID
+    id: id
   }
 }

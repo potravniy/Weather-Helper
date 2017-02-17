@@ -5,6 +5,7 @@ var webpackHotMiddleware = require('webpack-hot-middleware')
 var config = require('./webpack.config')
 var secret = require('./secret.json')
 var proxy = require('express-http-proxy')
+var includes = require('lodash/includes')
 var Express = require('express')
 var app = new Express()
 var port = 3127
@@ -15,14 +16,17 @@ app.use(webpackHotMiddleware(compiler))
 
 app.use('/weather', proxy("https://api.darksky.net/forecast/", {
   forwardPath: function(req, res){
-    if( isTrusted(req, res) ){
+    if( isTrusted(req.header('Referer')) ){
       return "https://api.darksky.net/forecast/" + secret.darksky + req.url
-    } else sendDeclineMsg(res)
+    } else {
+      sendDeclineMsg(res)
+      return null
+    }
   }
 }))
 app.use('/coords', proxy("https://www.googleapis.com/geolocation/v1/geolocate?key=", {
   forwardPath: function(req, res){
-    if( isTrusted(req, res) ){
+    if( isTrusted(req.header('Referer')) ){
       return "https://www.googleapis.com/geolocation/v1/geolocate?key=" + secret.google
     } else {
       sendDeclineMsg(res)
@@ -33,11 +37,11 @@ app.use('/coords', proxy("https://www.googleapis.com/geolocation/v1/geolocate?ke
   //   data = JSON.parse(data.toString('utf8'));
   //   console.log("intercept: ", JSON.stringify(data))
   //   callback(null, JSON.stringify(data))
-  // }  
+  // }
 }))
 app.use('/google', proxy("https://maps.googleapis.com/maps/api/js?key=", {
   forwardPath: function(req, res){
-    if( isTrusted(req, res) ){
+    if( isTrusted(req.header('Referer')) ){
       return "https://maps.googleapis.com/maps/api/js?key=" + secret.google +"&"+ req._parsedUrl.query
     } else {
       sendDeclineMsg(res)
@@ -56,12 +60,11 @@ app.listen(port, function (error) {
   }
 })
 
-function isTrusted(req, res){
-  if(secret.corsWhiteList.indexOf( req.header('Referer') ) === -1)  return false
-  else return true
+function isTrusted(referer){
+  return includes(secret.corsWhiteList, referer)
 }
 function sendDeclineMsg(res){
-  return res.json({
+  res.json({
     "error": true,
     "msg": "Cross origin requests are not allowed."
   })

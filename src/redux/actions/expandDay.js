@@ -4,10 +4,10 @@ import {
 } from '_constants/actions'
 
 export const expandDay = (data) => {
-  const { placeID, dayIndex } = data
+  const { id, dayIndex } = data
   return {
     type: EXPAND_DAY,
-    placeID: placeID,
+    id: id,
     dayIndex: dayIndex
   }
 }

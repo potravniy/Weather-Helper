@@ -1,31 +1,19 @@
-import {
+import { 
   EXPAND_PLACE,
-  COLLAPSE_PLACE,
-  EXPAND_DAY
+  COLLAPSE_PLACE
 } from '_constants/actions'
+import initialState from '_redux/initialState'
 
-export default function (places, action) {
+export default function (expandedPlace = initialState.expandedPlace, action) {
   switch (action.type) {
 
     case EXPAND_PLACE:
-      return places.map(item => {
-        return {
-          ...item,
-          isExpanded: item.placeID === action.placeID,
-          expandedDay: -1
-        }
-      })
-
+      return action.id
+      
     case COLLAPSE_PLACE:
-      return places.map(item => {
-        return {
-          ...item,
-          isExpanded: false,
-          expandedDay: -1
-        }
-      })
-
+      return -1
+      
     default:
-      return places
+      return expandedPlace
   }
 }

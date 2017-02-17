@@ -3,9 +3,9 @@ import getViewPort from '_utils/getViewPort'
 
 
 export default function (store) {
+
   const listener = () => {
-    const dimentions = getViewPort()
-    store.dispatch( onWindowResize(dimentions) )
+    store.dispatch( onWindowResize() )
   }
 
   window.addEventListener('resize', listener)

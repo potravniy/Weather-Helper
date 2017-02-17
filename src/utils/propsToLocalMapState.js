@@ -2,9 +2,9 @@ const propsToLocalMapState = props => {
   return {
     markers: props.places.map(p => {
       return {
-        key: p.placeID,
+        key: p.id,
         placeName: p.placeName,
-        placeID: p.placeID,
+        id: p.id,
         position: {
           lat: p.lat,
           lng: p.lng

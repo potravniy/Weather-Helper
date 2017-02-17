@@ -1,40 +1,34 @@
 import moment from 'moment'
 import 'moment-timezone'
 import { getWeather } from '_actions/getWeather'
-import {
-  EN,
-  UK,
-  RU
-} from '_constants/languages'
+import languages from '_constants/languages'
+import { isFinite } from 'lodash'
 
-moment.locale([EN, UK, RU])
-
-let oldLang = undefined
+moment.locale(languages)
 
 export default function onLangChangeListener ( store ) {
-  changeLang( store )
-  return store.subscribe(() => { changeLang( store ) })
+  return store.subscribe(() => {
+    const states = store.liftedStore.getState().computedStates
+    const oldState = states[states.length - 2].state
+    const newState = states[states.length - 1].state
+    if (oldState.lang !== newState.lang) {
+      changeDataLang(store)
+    }
+  })
 }
 
-function changeLang (store) {
+const isWeatherNeeded = place => isFinite(place.lat) && isFinite(place.lng)
+
+function changeDataLang (store) {
   const { lang, places } = store.getState()
 
-  if( lang !== oldLang ){
+  places.forEach( place => {
+  if(isWeatherNeeded(place)){
+      const props = {...pick(place, ['id', 'lat', 'lng']), lang}
+      store.dispatch( getWeather(props) )
+    }
+  })
 
-    places.forEach( p => {
-    if(p.lat > -90 && p.lat < 90 && p.weather !== null && !p.isFetching){
-        const props = {
-          placeID: p.placeID,
-          lat: p.lat,
-          lng: p.lng,
-          lang: lang
-        }
-        store.dispatch( getWeather(props) )
-      }
-    })
+  moment.locale(lang)
 
-    moment.locale( lang )
-    
-    oldLang = lang
-  }
 }

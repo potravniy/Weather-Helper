@@ -8,7 +8,7 @@ import { CALL_API } from 'redux-api-middleware'
 
 export const getWeather = (props) => {
   const {
-    placeID,
+    id,
     lat,
     lng,
     lang
@@ -16,7 +16,7 @@ export const getWeather = (props) => {
   
   return {
     [CALL_API]: {
-      endpoint: "weather/"+ lat +","+ lng +"?units=si&lang="+ lang +"&exclude=minutely,flags",
+      endpoint: `weather/${lat},${lng}?units=si&lang=${lang}&exclude=minutely,flags`,
       method: 'GET',
       headers: {
         'Accept': 'text/plain',
@@ -24,18 +24,9 @@ export const getWeather = (props) => {
         'Content-Type': 'text/plain'
       },
       types: [
-        {
-          type: GET_WEATHER_REQUEST,
-          meta: placeID
-        },
-        {
-          type: GET_WEATHER_SUCCESS,
-          meta: placeID
-        },
-        {
-          type: GET_WEATHER_FAILURE,
-          meta: placeID
-        }
+        { type: GET_WEATHER_REQUEST, meta: { id } },
+        { type: GET_WEATHER_SUCCESS, meta: { id } },
+        { type: GET_WEATHER_FAILURE, meta: { id } }
       ]
     }
   }

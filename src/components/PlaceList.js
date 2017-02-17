@@ -9,7 +9,7 @@ const PlaceList = (props) => {
   let expandedPlace = null
   const places = props.places.map(p => {
     if (p.isExpanded) {
-      expandedPlace = <PlaceContainer key={p.placeID} place={p} />
+      expandedPlace = <PlaceContainer key={p.id} place={p} />
       //  For big screen show expanded place twice - expanded AND collapsed
       if (props.viewport.isWide || props.viewport.isUltrawide) {
         const data = {
@@ -17,13 +17,13 @@ const PlaceList = (props) => {
           isExpanded: false,
           hasExpandedView: true
         }
-        return <PlaceContainer key={p.placeID} place={data} />
+        return <PlaceContainer key={p.id} place={data} />
       } else {
         return null
       }
 
     } else {
-      return <PlaceContainer key={p.placeID} place={p} />
+      return <PlaceContainer key={p.id} place={p} />
     }
 
   })

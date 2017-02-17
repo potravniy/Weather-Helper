@@ -11,13 +11,23 @@ body {
 body * {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 }
 .clearfix:after {
   content: "";
   display: table;
   clear: both;
 }
-
+#without_js {
+  max-width: 600px;
+  margin: 36px auto;
+  background-color: #fff777;
+  border: 3px dashed #000;
+  padding: 16px 36px;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 26px;
+}
 .container {
   width: 100%;
 }
@@ -65,6 +75,7 @@ body * {
   border-radius: 0.1em;
   box-shadow: 1px 1px 1.2px 1.2px #aaa;
   background-color: #f3f3f3;
+  -webkit-appearance: none;
 }
 .header__button--with-icon {
   padding: 0;
@@ -159,9 +170,9 @@ body * {
 .day-tile__item-temperature__content .icon {
   position: absolute;
   right: 42px;
-  top: -2px;
+  top: 0;
   width: 1.4em;
-  height: auto;
+  height: 1.4em;
 }
 .day-tile__item-temperature__content .icon.moon {
   right: 45px;
@@ -250,13 +261,13 @@ body * {
 
 
 .is_very_narrow .day-tile__item-wind_and_precip {
-  width: 30%;
+  width: 28%;
 }
 .is_very_narrow .day-tile__item-temperature {
-  width: 20%;
+  width: 22%;
 }
 .is_very_narrow .day-tile__item-temperature__content {
-  width: 2.7em;
+  width: 3em;
 }
 .is_very_narrow .day-tile__item-temperature__content .icon {
   right: 28px;

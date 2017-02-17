@@ -2,10 +2,9 @@ import {
   ON_RESIZE
 } from '_constants/actions'
 
-export const onWindowResize = (props) => {
+export const onWindowResize = () => {
 
   return {
-    type: ON_RESIZE,
-    ...props
+    type: ON_RESIZE
   }
 }

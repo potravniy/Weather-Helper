@@ -16,13 +16,14 @@ const info = (props) => {
 
   const {
     placeName,
-    placeID,
+    id,
     position,
     btnRemoveTxt,
-    removePlace
+    removePlace,
+    hideRemoveBtn
   } = props
 
-  const button = placeID===0 ? '' :
+  const button = hideRemoveBtn ? '' :
       '<button class="infowindow__btn" onclick="window.removePlace()">'+
         btnRemoveTxt+
       '</button>'
@@ -33,7 +34,7 @@ const info = (props) => {
       '</h3>'+
       button+
     '</div>';
-  window.removePlace = placeID===0 ? null : removePlace
+  window.removePlace = id===0 ? null : removePlace
   infowindow.setContent( contentString )
   infowindow.setPosition( position )
 

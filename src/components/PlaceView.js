@@ -28,7 +28,7 @@ const PlaceView = (props) => {
     viewport,
     weeklySummary
   } = props
-  const onClick = onPlaceClick.bind(null, place.placeID)
+  const onClick = onPlaceClick.bind(null, place.id)
   const gmtOffset = timezone
     ? ' GMT' + formatMinutesToHhMm(-moment.tz.zone(timezone).offset(Date.now()))
     : ''
@@ -60,7 +60,7 @@ const PlaceView = (props) => {
           } else {
             isDayExpanded = false
             clickHandler = expandDay.bind(null, {
-              placeID: place.placeID,
+              id: place.id,
               dayIndex: i
             })
           }

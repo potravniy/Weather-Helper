@@ -64,8 +64,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps (dispatch) {
   return {
-    expandPlace: (placeID) => {
-      dispatch(expandPlace(placeID))
+    expandPlace: (id) => {
+      dispatch(expandPlace(id))
       scrollToTop()
     },
     collapsePlace: () => dispatch(collapsePlace()),

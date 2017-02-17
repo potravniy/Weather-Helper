@@ -3,10 +3,10 @@ import {
   COLLAPSE_PLACE
 } from '_constants/actions'
 
-export const expandPlace = (placeID) => {
+export const expandPlace = (id) => {
   return {
     type: EXPAND_PLACE,
-    placeID: placeID
+    id: id
   }
 }
 

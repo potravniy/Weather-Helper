@@ -78,11 +78,14 @@ class MapComponent extends Component {
   }
   handleMarkerClick(targetMarker){
     infoWindow({
-      placeName: targetMarker.placeID === 0 ? this.formatMessage( CURRENT_POSITION ) : targetMarker.placeName  ,
-      placeID: targetMarker.placeID,
+      placeName: targetMarker.placeName === 'Current position'
+        ? this.formatMessage( CURRENT_POSITION )
+        : targetMarker.placeName,
+      id: targetMarker.id,
       position: targetMarker.position,
       btnRemoveTxt: this.formatMessage( BTN_REMOVE ),
-      removePlace: this.props.removePlace.bind(this, targetMarker.placeID)
+      removePlace: this.props.removePlace.bind(this, targetMarker.id),
+      hideRemoveBtn: targetMarker.placeName === 'Current position'
     })
     .open(this.map)
   }
