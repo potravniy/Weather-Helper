@@ -1,4 +1,4 @@
-import { findIndex, has } from 'lodash'
+import { findIndex, pick, omit } from 'lodash'
 
 import initialState, { placeInitialState } from '_redux/initialState'
 
@@ -33,12 +33,15 @@ export default function placesReducer (places = initialState.places, action) {
       return places.filter(place => place.id !== action.id)
 
     default:
-      var id = has(action, 'meta.id') ? action.meta.id : action.id
-      var i = findIndex(places, {id})
-      if (i < 0) return places // There's no such place
+      var id = action.id || action.meta && action.meta.id 
+      var i = id && findIndex(places, {id})
+      if (!id || i < 0) return places // There's no place with action inside the place
       return [
         ...places.slice(0, i),
-        placeReducer(places[i], action),
+        {
+          ...placeReducer(omit(places[i], ['id', 'placeName']), action),
+          ...pick(places[i], ['id', 'placeName'])
+        },
         ...places.slice(++i)
       ]
   }

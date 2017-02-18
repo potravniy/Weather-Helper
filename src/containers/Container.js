@@ -10,7 +10,20 @@ import MapContainer from '_containers/MapContainer'
 
 class Container extends Component {
   render() {
-    const { isMapVisible } = this.props
+    const {
+      isMapVisible,
+      expandedPlace,
+      viewport,
+      places
+    } = this.props
+    const expandedPlaceItem = !!expandedPlace
+      && places.find(place => place.id === expandedPlace)
+
+    const isViewportBig = viewport.isWide || viewport.isUltrawide
+    const collapsedPlaces = places.filter(p => {
+      return isViewportBig ? true : p.id !== expandedPlace
+    })
+    const showTips = places.length < 2
 
     return (
       <div className='container' >
@@ -18,15 +31,16 @@ class Container extends Component {
           lang={this.props.lang}
           showMap={this.props.showMap}
           changeLang={this.props.changeLang}
-          viewport={this.props.viewport}
-          isMapVisible={isMapVisible}
+          viewport={viewport}
+          blur={isMapVisible}
         />
         {
           isMapVisible
             ? <MapContainer />
             : <PlaceList
-                places={this.props.places}
-                viewport={this.props.viewport}
+                expandedPlace={expandedPlaceItem}
+                collapsedPlaces={collapsedPlaces}
+                showTips={showTips}
               />
         }
       </div>
@@ -39,7 +53,8 @@ Container.propTypes = {
   showMap: PropTypes.func.isRequired,
   changeLang: PropTypes.func.isRequired,
   viewport: PropTypes.object.isRequired,
-  places: PropTypes.array.isRequired
+  places: PropTypes.array.isRequired,
+  expandedPlace: PropTypes.string.isRequired
 }
 
 function mapStateToProps(state) {
@@ -47,7 +62,8 @@ function mapStateToProps(state) {
     lang: state.lang,
     isMapVisible: state.isMapVisible,
     viewport: state.viewport,
-    places: state.places
+    places: state.places,
+    expandedPlace: state.expandedPlace
   }
 }
 

@@ -9,7 +9,7 @@ export const nonStorablePartOfPlace = {
   'expandedDay': -1
 }
 
-export const placeInitialState =     {
+export const placeInitialState = {
   'placeName': 'Current position',
   'id': 'place_0',
   'coords': {
@@ -22,7 +22,7 @@ export const placeInitialState =     {
 }
 
 const defaultState = {
-  'expandedPlace': -1,
+  'expandedPlace': '',
   'isMapVisible': false,
   'lang': languages.includes(window.language) ? window.language : EN,
   'places': [

@@ -7,46 +7,38 @@ import {
 } from '_constants/actions'
 
 export default function (weather = placeInitialState.weather, action) {
+
   const error = catchError(action)
+  if(error){
+    alert(error)
+    return {
+      ...weather,
+      isFetching: false,
+      error
+    }
+  }
 
   switch (action.type) {
 
     case GET_WEATHER_REQUEST:
-      if(error){
-        alert(error)
-        return {
-          ...weather,
-          error 
-        }
-      } else {
-        return {
-          ...weather,
-          'isFetching': true
-        }
+      return {
+        ...weather,
+        'isFetching': true
       }
 
     case GET_WEATHER_SUCCESS:
-      if(error){
-        alert(error)
-        return {
-          ...weather,
-          'isFetching': false,
-          error 
-        }
-      } else {
-        return {
-          ...weather,
-          'isFetching': false,
-          'data': action.payload
-        }
-      }
-
-    case GET_WEATHER_FAILURE:
-      alert(error)
       return {
         ...weather,
         'isFetching': false,
-        error
+        'data': action.payload
+      }
+
+    case GET_WEATHER_FAILURE:
+      alert(GET_WEATHER_FAILURE)
+      return {
+        ...weather,
+        'isFetching': false,
+        error: GET_WEATHER_FAILURE
       }
 
     default:

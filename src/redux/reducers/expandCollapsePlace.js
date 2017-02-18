@@ -11,7 +11,7 @@ export default function (expandedPlace = initialState.expandedPlace, action) {
       return action.id
       
     case COLLAPSE_PLACE:
-      return -1
+      return initialState.expandedPlace
       
     default:
       return expandedPlace

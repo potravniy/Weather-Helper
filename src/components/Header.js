@@ -8,13 +8,13 @@ import { MINIMAL_WIDTH, VERY_NARROW_MAX_WIDTH } from '_constants/viewportWidths'
 const Header = (props) => {
   const {
     changeLang,
-    isMapVisible,
+    blur,
     lang,
     showMap,
     viewport
   } = props
   const langHandler = changeLang.bind(null, lang)
-  const className = isMapVisible ? 'header blur-me' : 'header'
+  const className = blur ? 'header blur-me' : 'header'
 
   return (
       <header className={className} style={{fontSize: calcHeaderFontSize(viewport)}}>
@@ -41,7 +41,7 @@ const Header = (props) => {
 
 Header.propTypes = {
   changeLang: PropTypes.func.isRequired,
-  isMapVisible: PropTypes.bool.isRequired,
+  blur: PropTypes.bool.isRequired,
   lang: PropTypes.string.isRequired,
   showMap: PropTypes.func.isRequired,
   viewport: PropTypes.object.isRequired

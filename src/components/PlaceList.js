@@ -6,55 +6,42 @@ import PlaceContainer from '_containers/PlaceContainer'
 import { TIPS } from '_intl/defaultMessages.json'
 
 const PlaceList = (props) => {
-  let expandedPlace = null
-  const places = props.places.map(p => {
-    if (p.isExpanded) {
-      expandedPlace = <PlaceContainer key={p.id} place={p} />
-      //  For big screen show expanded place twice - expanded AND collapsed
-      if (props.viewport.isWide || props.viewport.isUltrawide) {
-        const data = {
-          ...p,
-          isExpanded: false,
-          hasExpandedView: true
-        }
-        return <PlaceContainer key={p.id} place={data} />
-      } else {
-        return null
-      }
-
-    } else {
-      return <PlaceContainer key={p.id} place={p} />
-    }
-
-  })
+  const {
+    expandedPlace,
+    collapsedPlaces,
+    showTips,
+  } = props
 
   return (
     <main className='main clearfix'>
       {
         expandedPlace &&
         <section className="expanded-place">
-          {expandedPlace}
+          <PlaceContainer key={expandedPlace.id} place={expandedPlace} isExpanded />
         </section>
       }
       {
-        places.length > 0 &&
         <section className="collapsed-places clearfix">
-          {places}
-          {
-            places.length === 1 &&
-            <div className="tips">
-              <FormattedMessage { ...TIPS } />
-            </div>
-          }
+          {collapsedPlaces.map(p => {
+            return <PlaceContainer key={p.id} place={p} />
+          })}
         </section>
       }
+      {
+        showTips &&
+        <div className="tips">
+          <FormattedMessage { ...TIPS } />
+        </div>
+      }
+
     </main>
   )
 }
 
 PlaceList.propTypes = {
-  places: PropTypes.array.isRequired,
-  viewport: PropTypes.object.isRequired
+  expandedPlace: PropTypes.object.isRequired,
+  collapsedPlaces: PropTypes.array.isRequired,
+  showTips: PropTypes.bool.isRequired
 }
 
 export default PlaceList

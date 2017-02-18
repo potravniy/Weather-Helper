@@ -35,10 +35,11 @@ export default function (coords = placeInitialState.coords, action) {
       }
 
     case GET_COORDS_FAILURE:
+      alert(GET_COORDS_FAILURE)
       return {
         ...coords,
         'isFetching': false,
-        error
+        error: GET_COORDS_FAILURE
       }
 
     default:

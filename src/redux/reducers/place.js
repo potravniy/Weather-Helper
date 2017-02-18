@@ -8,8 +8,6 @@ import weather from '_reducers/weather'
 const placeReducer = combineReducers({
   coords,
   expandedDay,
-  id: id => id || placeInitialState.id,
-  placeName: placeName => placeName || placeInitialState.placeName,
   weather
 })
 

@@ -6,8 +6,7 @@ const isWeatherNeeded = p => isNull(p.weather.data) && isFinite(p.coords.lat) &&
 
 function checkIfWeatherNeeded (store) {
   const { places, lang } = store.getState()
-  const dispatchedActionList = {}
-  console.log('WeatherlList: ', places)
+  // console.log('WeatherlList: ', places)
 
   places.forEach(place =>{
     if(isWeatherNeeded(place)) {
@@ -17,14 +16,16 @@ function checkIfWeatherNeeded (store) {
         'lng': place.coords.lng,
         lang
       }
-      console.log('isWeatherNeeded: ', props)
+      // console.log('isWeatherNeeded: ', props)
       store.dispatch(getWeather(props))
-      isActionDispatched[place.id] = true
+      isActionDispatched[place.id] = !place.weather.isFetching
     }
-    dispatchedActionList[place.id] = isActionDispatched[place.id] || false
+    isActionDispatched[place.id] = place.weather.isFetching
+      ? false
+      : isActionDispatched[place.id] || false
   })
 
-  isActionDispatched = dispatchedActionList
+  isActionDispatched = pick(isActionDispatched, places.map(p => p.id))
 
 }
 
