@@ -11,7 +11,7 @@ export const nonStorablePartOfPlace = {
 
 export const placeInitialState =     {
   'placeName': 'Current position',
-  'id': '0',
+  'id': 'place_0',
   'coords': {
     'isFetching': false,
     'lat': undefined,
@@ -26,7 +26,7 @@ const defaultState = {
   'isMapVisible': false,
   'lang': languages.includes(window.language) ? window.language : EN,
   'places': [
-    ...placeInitialState
+    placeInitialState
   ],
   'viewport': null
 }

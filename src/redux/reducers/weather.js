@@ -1,10 +1,12 @@
+import { has } from 'lodash'
+import { placeInitialState } from '_redux/initialState'
 import {
   GET_WEATHER_REQUEST,
   GET_WEATHER_SUCCESS,
   GET_WEATHER_FAILURE
 } from '_constants/actions'
 
-export default function (weather, action) {
+export default function (weather = placeInitialState.weather, action) {
   const error = catchError(action)
 
   switch (action.type) {
@@ -39,7 +41,7 @@ export default function (weather, action) {
         }
       }
 
-    case GET_COORDS_FAILURE:
+    case GET_WEATHER_FAILURE:
       alert(error)
       return {
         ...weather,
@@ -53,7 +55,7 @@ export default function (weather, action) {
 }
 
 function catchError(action){
-  if(action.payload.error) return action.payload.msg
+  if(has(action, 'payload.error')) return action.payload.msg
   if(action.error) return `${action.payload.message} ${action.payload.name}`
   return null
 }

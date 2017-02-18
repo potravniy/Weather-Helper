@@ -23,7 +23,7 @@ function changeState(store) {
   const newString = JSON.stringify(storeToSave)
 
   if (savedString !== newString) {
-    window.localStorage.setItem('weatherHelper', newString)
+    // window.localStorage.setItem('weatherHelper', newString)
     savedString = newString
   }
 }
