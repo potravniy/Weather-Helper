@@ -1,6 +1,7 @@
 import { has } from 'lodash'
 import { placeInitialState } from '_redux/initialState'
 import {
+  SET_COORDS,
   GET_COORDS_REQUEST,
   GET_COORDS_SUCCESS,
   GET_COORDS_FAILURE
@@ -19,6 +20,13 @@ export default function (coords = placeInitialState.coords, action) {
   }
 
   switch (action.type) {
+
+    case SET_COORDS:
+      return {
+        ...coords,
+        'lat': action.lat,
+        'lng': action.lng
+      }
 
     case GET_COORDS_REQUEST:
       return {

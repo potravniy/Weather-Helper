@@ -58,5 +58,10 @@
     "id": "TIPS",
     "description": "Tips for new users",
     "defaultMessage": "\nFeel free to:\n- expand/collapse place clicking on place name ('Current position') or arrow in upper-right corner;\n- expand/collapse day clicking on day with arrow in upper-right corner;\n- add/remove places using button 'Place'; \n- change language using button 'EN'."
+  },
+  "USER_DENIED_GEOLOCATION": {
+    "id": "USER_DENIED_GEOLOCATION",
+    "description": "User denied Geolocation in browser",
+    "defaultMessage": "You can add your current location to places list with button 'Places'."
   }
 }
