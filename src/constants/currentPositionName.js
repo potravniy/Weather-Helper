@@ -1,0 +1,1 @@
+export const CURRENT_POSITION_NAME = 'Current position'

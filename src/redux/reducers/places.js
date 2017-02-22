@@ -21,10 +21,8 @@ export default function placesReducer (places = initialState.places, action) {
           'placeName': action.placeName,
           'id': getNewPlaceId(places),
           'coords': {
-            'isFetching': false,
             'lat': action.lat,
             'lng': action.lng,
-            'error': null
           }
         }
       ]

@@ -1,14 +1,13 @@
+import { CURRENT_POSITION_NAME } from'_constants/currentPositionName'
 import languages, { EN } from '_constants/languages'
 import { merge, cloneDeep } from 'lodash'
 
 export const placeInitialState = {
-  'placeName': 'Current position',
+  'placeName': CURRENT_POSITION_NAME,
   'id': 'place_0',
   'coords': {
-    'isFetching': false,
     'lat': undefined,
     'lng': undefined,
-    'error': null
   },
   'weather': {
     'isFetching': false,

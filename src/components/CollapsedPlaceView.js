@@ -31,7 +31,9 @@ const CollapsedPlaceView = (props) => {
     : 'place collapsed_place'
   const onClick = hasExpandedView
     ? collapsePlace.bind(null, {id: place.id})
-    : expandPlace.bind(null, place.id)
+    : place.weather.data
+      ? expandPlace.bind(null, place.id)
+      : null
   const width = getArticleWidth(viewport).forCollapsedPlace
   const weatherNow = get(place, 'weather.data.currently')
 

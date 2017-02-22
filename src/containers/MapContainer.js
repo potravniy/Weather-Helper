@@ -4,6 +4,7 @@ import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps/lib";
 import { injectIntl } from 'react-intl'
 
 import CloseIcon from '_icons/CloseIcon'
+import GeoIcon from '_icons/GeoIcon'
 
 import propsToLocalMapState from '_utils/map/propsToLocalMapState'
 import mapSearchInit from '_utils/map/mapSearchInit'
@@ -23,7 +24,7 @@ class MapComponent extends Component {
   constructor(props){
     super(props)
     this.state = propsToLocalMapState(props)
-    this.initMapControls = initMapControls
+    this.initMapControls = initMapControls.bind(this)
     this.mapSearchInit = mapSearchInit
     this.infoWindow = infoWindow
     this.handleMapClick = handleMapClick.bind(this)
@@ -39,7 +40,6 @@ class MapComponent extends Component {
     setTimeout(() => {
       if ( window.innerWidth !== this.props.viewport.width || window.innerHeight !== this.props.viewport.height ) {
         window.dispatchEvent(new Event('resize'))
-        console.log('resize')
       }
     }, 100)
   }
@@ -54,8 +54,16 @@ class MapComponent extends Component {
       height: this.props.viewport.height
     }
     const markers =  this.state.markers.map(marker => {
-      return <Marker { ...marker } onClick={this.handleMarkerClick.bind(this, marker)} />
+      return (
+        <Marker
+          { ...marker }
+          onClick={this.handleMarkerClick.bind(this, marker)}
+        />
+      )
     })
+    const geoBtnStyle = this.state.geoBtnClick
+      ? {display: 'block'}
+      : {display: 'none'}
 
     return (
       <section className="map" style={ mapStyle }>
@@ -94,7 +102,7 @@ class MapComponent extends Component {
           }}
         />
         <div
-          className='controls close-control'
+          className='controls btn-control'
           ref={closeBtn => {
             if( this.closeBtn || !closeBtn ) return
             this.closeBtn = closeBtn
@@ -103,6 +111,18 @@ class MapComponent extends Component {
           onClick={this.props.hideMap}
         >
           <CloseIcon/>
+        </div>
+        <div
+          className='controls btn-control'
+          style={geoBtnStyle}
+          ref={geoBtn => {
+            if( this.geoBtn || !geoBtn ) return
+            this.geoBtn = geoBtn
+            this.initMapControls()
+          }}
+          onClick={this.state.geoBtnClick}
+        >
+          <GeoIcon/>
         </div>
       </section>
     );

@@ -1,5 +1,5 @@
 import { getWeather } from '_actions/getWeather'
-import { pick, isFinite, isNull } from 'lodash'
+import { pick, isFinite, isNull, size } from 'lodash'
 
 let isActionDispatched = {}
 const isWeatherNeeded = place => !place.weather.data
@@ -22,7 +22,7 @@ function checkIfWeatherNeeded (store) {
     }
   })
 
-  if(isActionDispatched.length > places.length){
+  if(size(isActionDispatched) > places.length){
     isActionDispatched = pick(isActionDispatched, places.map(p => p.id))
   }
 

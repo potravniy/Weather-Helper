@@ -434,12 +434,12 @@ body * {
   background-color: #f3f3f3;
   padding: 3px 10px;
 }
-.close-control {
-  margin-right: 10px;
+.btn-control {
+  margin: 10px 12px;
   background-color: #fff;
   cursor: pointer;
 }
-.close-control .close {
+.btn-control .icon {
   fill: #696969;
 }
 

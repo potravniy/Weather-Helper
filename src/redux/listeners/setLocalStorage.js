@@ -1,3 +1,4 @@
+import { CURRENT_POSITION_NAME } from'_constants/currentPositionName'
 import _ from 'lodash'
 
 let savedString = window.localStorage.weatherHelper
@@ -7,15 +8,13 @@ let savedString = window.localStorage.weatherHelper
 function cleanupPlace (place) {
   return _(place)
     .omit([
-      'coords.isFetching',
-      'coords.error',
       'weather',
       'expandedDay'
     ])
     .mapValues(
       (val, key, obj) => {
-        return obj.placeName === 'Current position' && key === 'coords'
-          ? {'lat': undefined, 'lng': undefined}
+        return obj.placeName === CURRENT_POSITION_NAME && key === 'coords'
+          ? {}
           : val
       }
     )
