@@ -2,19 +2,17 @@ import { getCoords } from '_actions/getCoords'
 import { isFinite } from 'lodash'
 
 let isActionDispatched = {}
-const areCoordsNeeded = place => !isFinite(place.coords.lat) && !place.coords.isFetching && !isActionDispatched[place.id]
+const areCoordsNeeded = place => !isFinite(place.coords.lat)
+                                 && !place.coords.isFetching
 
 function checkIfCoordNeeded (store) {
   const { places } = store.getState()
 
   places.forEach(place => {
-    if(areCoordsNeeded(place)) {
+    if(!isActionDispatched[place.id] && areCoordsNeeded(place)) {
       store.dispatch(getCoords(place.id))
-      isActionDispatched[place.id] = !place.coords.isFetching
+      isActionDispatched[place.id] = true
     }
-    isActionDispatched[place.id] = place.coords.isFetching
-      ? false
-      : isActionDispatched[place.id] || false
   })
 
 }

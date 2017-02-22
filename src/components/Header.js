@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { BTN_PLACES, TITLE } from '_intl/defaultMessages.json'
-
 import { MINIMAL_WIDTH, VERY_NARROW_MAX_WIDTH } from '_constants/viewportWidths'
 
 const Header = (props) => {

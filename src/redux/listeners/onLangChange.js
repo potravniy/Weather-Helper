@@ -6,7 +6,8 @@ import { isFinite } from 'lodash'
 
 moment.locale(languages)
 
-export default function onLangChangeListener ( store ) {
+export default function onLangChangeListener (store) {
+  moment.locale(store.getState().lang)
   return store.subscribe(() => {
     const states = store.liftedStore.getState().computedStates
     const oldState = states[states.length - 2].state
@@ -17,14 +18,19 @@ export default function onLangChangeListener ( store ) {
   })
 }
 
-const isWeatherNeeded = place => isFinite(place.lat) && isFinite(place.lng)
+const isWeatherNeeded = place => isFinite(place.coords.lat) && isFinite(place.coords.lng)
 
 function changeDataLang (store) {
   const { lang, places } = store.getState()
 
   places.forEach( place => {
   if(isWeatherNeeded(place)){
-      const props = {...pick(place, ['id', 'lat', 'lng']), lang}
+      const props = {
+        'id': place.id,
+        'lat': place.coords.lat,
+        'lng': place.coords.lng,
+        lang
+      }
       store.dispatch( getWeather(props) )
     }
   })

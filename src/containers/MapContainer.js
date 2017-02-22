@@ -5,30 +5,34 @@ import { injectIntl } from 'react-intl'
 
 import CloseIcon from '_icons/CloseIcon'
 
-import propsToLocalMapState from '_utils/propsToLocalMapState'
-import mapSearchInit from '_utils/mapSearchInit'
-import infoWindow from '_utils/infoWindow'
-import defaultMapOptions from '_utils/defaultMapOptions'
+import propsToLocalMapState from '_utils/map/propsToLocalMapState'
+import mapSearchInit from '_utils/map/mapSearchInit'
+import infoWindow from '_utils/map/infoWindow'
+import defaultMapOptions from '_utils/map/defaultMapOptions'
+import initMapControls from '_utils/map/initMapControls'
+import handleMapClick from '_utils/map/handleMapClick'
+import handleMarkerClick from '_utils/map/handleMarkerClick'
+import setMapBounds from '_utils/map/setMapBounds'
 
 import { addPlace, removePlace } from '_actions/addRemovePlace'
 import { hideMap } from '_actions/changePlaces'
 
-import {
-  BTN_REMOVE,
-  CURRENT_POSITION,
-  ENTER_NEW_PLACE_NAME,
-  WHAT_PLACE_WOULD_YOU_ADD
-} from '_intl/defaultMessages.json'
+import { WHAT_PLACE_WOULD_YOU_ADD } from '_intl/defaultMessages.json'
 
 class MapComponent extends Component {
   constructor(props){
     super(props)
     this.state = propsToLocalMapState(props)
-    this.formatMessage = props.intl.formatMessage
+    this.initMapControls = initMapControls
+    this.mapSearchInit = mapSearchInit
+    this.infoWindow = infoWindow
+    this.handleMapClick = handleMapClick.bind(this)
+    this.handleMarkerClick = handleMarkerClick.bind(this)
+    this.setMapBounds = setMapBounds.bind(this)
   }
   componentWillReceiveProps(newProps){
     this.setState( propsToLocalMapState(newProps) )
-    infoWindow({ close: true })
+    this.infoWindow({ close: true })
   }
   componentDidUpdate(){
     this.setMapBounds()
@@ -43,66 +47,6 @@ class MapComponent extends Component {
     this.removeSearchListeners()
     this.removeOrientationListener()
   }
-  initMapControls(){
-    if ( this.map && this.searchInput && this.closeBtn ) {
-      const props = {
-        map: this.map,
-        input: this.searchInput,
-        markers: this.state.markers,
-        searchPlaceholder: this.formatMessage( ENTER_NEW_PLACE_NAME ),
-        addPlace: this.props.addPlace
-      }
-      this.removeSearchListeners = mapSearchInit(props)
-      this.map.controls[window.google.maps.ControlPosition.TOP_RIGHT].push(this.closeBtn)
-      const onOrientationChange = () => {
-        setTimeout(() => {
-          this.setMapBounds()
-        }, 200)
-      }
-      window.addEventListener('orientationchange', onOrientationChange)
-      this.removeOrientationListener = () => {
-        window.removeEventListener('orientationchange', onOrientationChange)
-      }
-      this.setMapBounds()
-    }
-  }
-  handleMapClick(event) {
-    const name = prompt( this.formatMessage( ENTER_NEW_PLACE_NAME ) )
-    if( name ){
-      this.props.addPlace({
-        name: name,
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng()
-      })
-    }
-  }
-  handleMarkerClick(targetMarker){
-    infoWindow({
-      placeName: targetMarker.placeName === 'Current position'
-        ? this.formatMessage( CURRENT_POSITION )
-        : targetMarker.placeName,
-      id: targetMarker.id,
-      position: targetMarker.position,
-      btnRemoveTxt: this.formatMessage( BTN_REMOVE ),
-      removePlace: this.props.removePlace.bind(this, targetMarker.id),
-      hideRemoveBtn: targetMarker.placeName === 'Current position'
-    })
-    .open(this.map)
-  }
-  setMapBounds(){
-    if( this.state.markers.length > 1 ){
-      const bounds = new window.google.maps.LatLngBounds()
-      this.state.markers.forEach((marker) => {
-        bounds.extend(new window.google.maps.LatLng(marker.position.lat, marker.position.lng))
-      })
-      this.map.fitBounds(bounds)
-    } else {
-      this.map.panTo(this.state.center)
-    }
-  }
-  setMapBounds = this.setMapBounds.bind(this);
-  handleMapClick = this.handleMapClick.bind(this);
-  hideMap = this.props.hideMap.bind(this)
 
   render(){
     const mapStyle = {
@@ -122,9 +66,9 @@ class MapComponent extends Component {
           googleMapElement={
             <GoogleMap
               ref={map => {
-                    if( this.map || !map ) return
-                    this.map = map.props.map
-                    this.initMapControls()
+                if( this.map || !map ) return
+                this.map = map.props.map
+                this.initMapControls()
               }}
               defaultZoom={6}
               defaultCenter={this.state.center}
@@ -139,7 +83,7 @@ class MapComponent extends Component {
           id="pac-input"
           className="controls search"
           type="text"
-          placeholder={this.formatMessage( WHAT_PLACE_WOULD_YOU_ADD )}
+          placeholder={this.props.intl.formatMessage( WHAT_PLACE_WOULD_YOU_ADD )}
           ref={searchInput => {
             if( this.searchInput || !searchInput ) return
             this.searchInput = searchInput
@@ -156,7 +100,7 @@ class MapComponent extends Component {
             this.closeBtn = closeBtn
             this.initMapControls()
           }}
-          onClick={this.hideMap}
+          onClick={this.props.hideMap}
         >
           <CloseIcon/>
         </div>
@@ -187,4 +131,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, null, {withRef: true})(injectIntl( MapComponent ))
+export default connect(mapStateToProps, mapDispatchToProps)(injectIntl( MapComponent ))

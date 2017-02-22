@@ -1,13 +1,5 @@
 import languages, { EN } from '_constants/languages'
-
-export const nonStorablePartOfPlace = {
-  'weather': {
-    'isFetching': false,
-    'data': null,
-    'error': null
-  },
-  'expandedDay': -1
-}
+import { merge, cloneDeep } from 'lodash'
 
 export const placeInitialState = {
   'placeName': 'Current position',
@@ -18,11 +10,16 @@ export const placeInitialState = {
     'lng': undefined,
     'error': null
   },
-  ...nonStorablePartOfPlace
+  'weather': {
+    'isFetching': false,
+    'data': null,
+    'error': null
+  },
+  'expandedDay': -1
 }
 
 const defaultState = {
-  'expandedPlace': '',
+  'expandedPlaceID': '',
   'isMapVisible': false,
   'lang': languages.includes(window.language) ? window.language : EN,
   'places': [
@@ -32,10 +29,7 @@ const defaultState = {
 }
 
 function cleanupPlace (place) {
-  return {
-    ...place,
-    ...nonStorablePartOfPlace
-  }
+  return merge(cloneDeep(placeInitialState), place)
 }
 
 function cleanupState (state) {
@@ -47,7 +41,6 @@ function cleanupState (state) {
 }
 
 const savedState = JSON.parse(window.localStorage.getItem('weatherHelper'))
-
 const initialState = savedState
   ? cleanupState(savedState)
   : defaultState

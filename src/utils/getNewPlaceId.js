@@ -1,3 +1,8 @@
-import { uniqueId } from 'lodash'
+import { max } from 'lodash'
 
-export default uniqueId.bind(null, 'place_')
+export default (places) => {
+  const listId = places.map(place => {
+    return parseInt(place.id.split('_')[1])
+  })
+  return 'place_'+ (max(listId) + 1)
+}

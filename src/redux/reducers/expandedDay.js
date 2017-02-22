@@ -6,6 +6,7 @@ import {
 } from '_constants/actions'
 
 export default function (expandedDay = placeInitialState.expandedDay, action) {
+
   switch (action.type) {
 
     case EXPAND_DAY:

@@ -12,8 +12,10 @@ export const expandDay = (data) => {
   }
 }
 
-export const collapseDay = () => {
+export const collapseDay = (data) => {
+  const { id } = data
   return {
-    type: COLLAPSE_DAY
+    type: COLLAPSE_DAY,
+    id: id
   }
 }

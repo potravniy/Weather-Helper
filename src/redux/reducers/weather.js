@@ -7,7 +7,6 @@ import {
 } from '_constants/actions'
 
 export default function (weather = placeInitialState.weather, action) {
-
   const error = catchError(action)
   if(error){
     alert(error)
